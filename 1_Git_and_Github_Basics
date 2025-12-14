@@ -5,16 +5,16 @@ The challenge focuses on repository management, branching strategies, authentica
 
 ---
 
-## 📋 **Task 1: Fork and Clone the Repository**
+ 📋 Task 1: Fork and Clone the Repository
 
-### 🔹 Fork the Repository
+ 🔹 Fork the Repository
 Fork the given repository to your personal GitHub account.
 
-### 🔹 Verify Remote Connection (Local)
+🔹 Verify Remote Connection (Local)
 ```bash
 git remote -v
 
-## 📋 **Task 2: Initialize a Local Repository and Create a File** 
+ 📋 Task 2: Initialize a Local Repository and Create a File
 🔹 Create Challenge Directory and Initialize Git
 ```bash
 mkdir week-4-challenge
@@ -27,7 +27,7 @@ echo "Hi This is Md Rashed Ul Islam and this is just a text file as a part of my
 git add info.txt
 git commit -m "Initial commit: Add info.txt with introductory content"
 
-## 📋 **Task 3: Configure Remote URL with PAT and Push/Pull**
+ 📋 Task 3: Configure Remote URL with PAT and Push/Pull
 🔹 Connect Local Repository to Remote
 ```bash
 git remote add origin https://github.com/itzRashed/demo-shell-scripts.git
@@ -46,12 +46,12 @@ git add from_local.txt
 git commit -m "added from local"
 git push origin master
 
-## 📋 **Task 4: Explore Commit History**
+ 📋 Task 4: Explore Commit History
 🔹 View Commit History
 ```bash
 git log
 
-## 📋 **Task 5: Advanced Branching and Switching**
+ 📋 Task 5: Advanced Branching and Switching
 🔹 Create and Switch to Feature Branch
 ```bash
 git branch feature-update
@@ -63,7 +63,7 @@ git push origin feature-update
 ```bash
 git branch -d Week1_Networking
 
-##⚔️ **Advanced: Merge Conflict Simulation**
+⚔️ Advanced: Merge Conflict Simulation
 ```bash
 🔹 Create Experimental Branch
 git checkout -b experimental
@@ -79,7 +79,7 @@ echo "Project Status: Feature update completed successfully & Experimental build
 git add info.txt
 git commit -m "Solved merge conflict between feature-update and experimental"
 
-## 🎁 **Bonus Task: SSH Authentication**
+ 🎁 Bonus Task: SSH Authentication
 🔹 Generate SSH Key
 ```bash
 ssh-keygen
