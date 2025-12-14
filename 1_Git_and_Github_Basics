@@ -1,0 +1,93 @@
+# 📘 Week 4: Git and GitHub Challenge
+
+This document contains the complete solution for **Week 4 – Git and GitHub** as part of my **DevOps learning journey**.  
+The challenge focuses on repository management, branching strategies, authentication methods, and hands-on Git workflows.
+
+---
+
+## 📋 **Task 1: Fork and Clone the Repository**
+
+### 🔹 Fork the Repository
+Fork the given repository to your personal GitHub account.
+
+### 🔹 Verify Remote Connection (Local)
+```bash
+git remote -v
+
+## 📋 **Task 2: Initialize a Local Repository and Create a File** 
+🔹 Create Challenge Directory and Initialize Git
+```bash
+mkdir week-4-challenge
+cd week-4-challenge
+git init
+
+🔹 Create and Commit File
+```bash
+echo "Hi This is Md Rashed Ul Islam and this is just a text file as a part of my week 4 challenge. I am writing this file from my local machine and I will push this file to my remote or github repo Also I'm in a differenct branch except master right now." > info.txt
+git add info.txt
+git commit -m "Initial commit: Add info.txt with introductory content"
+
+## 📋 **Task 3: Configure Remote URL with PAT and Push/Pull**
+🔹 Connect Local Repository to Remote
+```bash
+git remote add origin https://github.com/itzRashed/demo-shell-scripts.git
+git remote -v
+🔹 Configure Remote with PAT
+```bash
+git remote set-url origin https://ghp_vOlyex2v7wYBHhZuYks2UZitSUZv03HW5jz@github.com/itzRashed/demo-shell-scripts.git
+🔹 Push and Pull Repository
+```bash
+git push origin master
+git pull origin master
+🔹 Push New Local File
+```bash
+vim from_local.txt
+git add from_local.txt
+git commit -m "added from local"
+git push origin master
+
+## 📋 **Task 4: Explore Commit History**
+🔹 View Commit History
+```bash
+git log
+
+## 📋 **Task 5: Advanced Branching and Switching**
+🔹 Create and Switch to Feature Branch
+```bash
+git branch feature-update
+git checkout feature-update
+git add info.txt
+git commit -m "Feature update: Enhanced info.txt with additional details"
+git push origin feature-update
+🔹 Delete Unused Branch
+```bash
+git branch -d Week1_Networking
+
+##⚔️ **Advanced: Merge Conflict Simulation**
+```bash
+🔹 Create Experimental Branch
+git checkout -b experimental
+```bash
+🔹 Commit Experimental Change
+```bash
+echo "Project Status: Experimental build in progress" > info.txt
+git add info.txt
+git commit -m "Experimental:update project status"
+🔹 Resolve Merge Conflict Manually
+```bash
+echo "Project Status: Feature update completed successfully & Experimental build tasted as well" > info.txt
+git add info.txt
+git commit -m "Solved merge conflict between feature-update and experimental"
+
+## 🎁 **Bonus Task: SSH Authentication**
+🔹 Generate SSH Key
+```bash
+ssh-keygen
+🔹 Add Public Key to GitHub
+```bash
+Copy contents of ~/.ssh/id_ed25519.pub
+Add it under GitHub → Settings → SSH and GPG Keys
+🔹 Switch Remote to SSH
+```bash
+git remote set-url origin git@github.com:itzRashed/90DaysOfDevOps.git
+git push origin feature-update
