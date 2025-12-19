@@ -1,0 +1,192 @@
+##Task 1: Working with Pull Requests (PRs)
+Scenario
+You are working on a new feature and need to merge your changes into the main branch using a Pull Request.
+Steps / Commands
+# Clone the repository
+git clone https://github.com/itzRashed/90_DaysOfDevOps.git
+
+# Create and switch to feature branch
+git checkout -b feature-branch
+
+# Make changes
+echo "New Feature" >> feature.txt
+
+# Stage and commit
+git add .
+git commit -m "Added a new feature"
+
+# Push feature branch
+git push origin feature-branch
+
+#Steps to Create a Pull Request
+1.	Fork the repository if you are not owner.
+2.	Clone the forked repository locally.
+3.	Create a feature branch.
+4.	Commit changes to the feature branch.
+5.	Push the branch to GitHub.
+6.	Open GitHub → Pull Requests → New Pull Request.
+7.	Compare feature-branch with main.
+8.	Add title, description, and submit PR.
+
+#Best Practices for Writing PR Descriptions
+•	Use a clear and descriptive title.
+•	Explain what was changed and why.
+•	Mention related issues (e.g., Fixes #12).
+•	Add screenshots/logs if applicable.
+•	Keep PRs small and focused.
+
+#Handling Review Comments
+•	Read comments carefully.
+•	Make requested changes in the same branch.
+•	Push updated commits.
+•	Reply politely and explain decisions.
+•	Resolve conversations after fixing.
+
+
+##Task 2: Undoing Changes – Reset & Revert
+Scenario
+You accidentally committed incorrect changes and need to undo them.
+Steps / Commands
+
+# Create wrong change
+echo "Wrong Code" >> wrong.txt
+git add .
+git commit -m "Committed by mistake"
+
+# Soft reset (keeps changes staged)
+git reset --soft HEAD~1
+
+# Mixed reset (unstages but keeps files)
+git reset --mixed HEAD~1
+
+# Hard reset (removes changes completely)
+git reset --hard HEAD~1
+
+# Revert commit safely
+git revert HEAD
+Difference Between Reset and Revert
+
+*Reset					
+- Rewrites history					
+- Dangerous on shared branches					
+*Revert					
+- Creates new commit					
+- Safe for shared branches					
+					
+#When to Use Each Method
+•	Reset: Local mistakes, unpushed commits.
+•	Revert: Public branches, production fixes.
+
+
+##Task 3: Stashing – Save Work Without Committing
+Scenario
+You need to switch branches but don’t want to commit incomplete work.
+Steps / Commands
+
+# Modify file
+echo "Temporary change" >> temp.txt
+
+# Stash changes
+git stash
+
+# Switch branch
+git checkout main
+
+# Apply stash
+git stash pop
+
+#When to Use git stash
+•	Switching branches quickly
+•	Pausing incomplete work
+•	Cleaning working directory temporarily
+
+#Difference Between stash pop and stash apply
+*stash pop
+- Applies & deletes stash
+- Used when stash is no longer needed
+
+*stash apply
+- Applies but keeps stash
+- Used when reuse is needed
+
+
+##Task 4: Cherry-Picking – Selectively Apply Commits
+Scenario
+A bug fix exists in another branch, and you only want that specific commit.
+Steps / Commands
+# Find commit
+git log --oneline
+
+# Cherry-pick commit
+git cherry-pick 3514659
+
+#How Cherry-Picking Is Used in Bug Fixes
+•	Apply urgent bug fixes to production
+•	Backport fixes to release branches
+•	Avoid merging unwanted features
+
+#Risks of Cherry-Picking
+•	Duplicate commits
+•	Conflict chances
+•	Broken history if overused
+
+
+##Task 5: Rebasing – Keeping a Clean Commit History
+Scenario
+Your branch is behind main and needs updating without merge commits.
+Steps / Commands
+
+# Fetch latest changes
+git fetch origin
+
+# Rebase feature branch onto main
+git rebase main
+
+# Resolve conflicts and continue
+git rebase --continue
+Difference Between Merge and Rebase
+
+*Merge
+- Creates merge commit
+- Easier & safer
+- Preserves context
+
+*Rebase
+- Linear history
+- Cleaner history
+- Rewrites commits
+
+#Best Practices for Rebasing
+•	Rebase only local branches
+•	Avoid rebasing shared branches
+•	Use interactive rebase for cleanup
+
+
+##Task 6: Branching Strategies Used in Companies
+Scenario
+Understand real-world branching strategies used in DevOps workflows.
+Git Flow
+•	Branches: main, develop, feature, release, hotfix
+•	Suitable for large, versioned releases
+GitHub Flow
+•	main + short-lived feature branches
+•	Continuous deployment
+•	Simple and fast
+Trunk-Based Development
+•	Single main branch
+•	Small frequent commits
+•	Heavy CI/CD usage
+
+#Simulated Workflow Example
+git checkout -b feature-login
+git commit -m "Add login feature"
+git checkout main
+git merge feature-login
+
+#Best Strategy for DevOps & CI/CD
+Trunk-Based Development and GitHub Flow
+
+*Strategy -*Pros -	*Cons
+- Git Flow -	Structured -	Complex
+- GitHub Flow -	Simple -	Needs strong CI
+- Trunk-Based -	Fast CI/CD -	Requires discipline
