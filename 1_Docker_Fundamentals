@@ -1,0 +1,77 @@
+🐳 Docker Fundamentals – Solution
+**Task 1: Introduction and Conceptual Understanding
+Introduction: Docker in Modern DevOps
+
+Docker is a containerization platform that allows applications to be packaged with all their dependencies into a single, portable unit called a container. In modern DevOps, Docker helps ensure consistency across development, testing, and production environments. It simplifies deployment, speeds up CI/CD pipelines, and reduces “it works on my machine” issues.
+
+Virtualization - vs - Containerization
+Aspect =	Virtualization --	Containerization
+Architecture =	Runs full OS per VM --	Shares host OS kernel
+Resource Usage =	Heavy -- Lightweight
+Startup Time =	Minutes --	Seconds
+Isolation	Strong = (hardware level) --	Process-level isolation
+
+##Why Containerization is Preferred:
+1. Faster startup and deployment
+2. Better resource utilization
+3. Ideal for microservices architecture
+4. Seamless integration with CI/CD pipelines
+5. Easier scaling and rollback
+
+**Task 2: Dockerfile for Sample Application
+Sample Application
+A simple Python Flask application that runs on port 80 and keeps the container alive.
+-------------------------------------------------------------------
+##Dockerfile
+# Base image (OS)
+From python:3.9-slim
+
+#Working directory
+WORKDIR /app
+
+#Copy src code to container
+COPY . .
+
+# Run the build command
+RUN pip install -r requirements.txt
+
+# Expose port 80
+EXPOSE 80
+
+# Serve the app/run the app(keep it running)
+CMD ["python","run.py"]
+---------------------------------------------------------------
+
+Build Image
+docker build -t python-app:latest .
+
+Run Container
+docker run -d -p 80:80 --name python-flask-app python-app:latest
+
+Verification Commands
+docker ps
+docker logs 9bad67ab766d<container_id>
+
+**Task 3: Docker Terminologies and Components
+
+##Key Docker Terminologies
+
+I. Image: A read-only template used to create containers.
+
+II. Container: A running instance of an image.
+
+III. Dockerfile: A script containing instructions to build a Docker image.
+
+IV. Volume: Persistent storage shared between host and container.
+
+V. Network: Enables communication between containers.
+
+##Docker Components
+
+I. Docker Engine: Core service that builds and runs containers.
+
+II. Docker CLI: Command-line interface to interact with Docker Engine.
+
+III. Docker Hub: Public registry to store and share Docker images.
+
+IV. Docker Registry: Storage and distribution system for images.
