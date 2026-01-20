@@ -1,0 +1,192 @@
+📌 Task 4: Optimize Docker Image Using Multi-Stage Builds
+🔹 Initial Dockerfile (Single Stage)
+FROM python:3.9-slim
+
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+
+EXPOSE 80
+CMD ["python", "run.py"]
+
+🔹 Problem
+
+Even with python:3.9-slim, the image still contained:
+- Linux utilities
+- Build dependencies
+- Package managers (pip)
+#Resulted in larger image size and increased attack surface
+
+🔹 Optimized Multi-Stage + Distroless Dockerfile
+# ---------- Stage 1: Builder ----------
+FROM python:3.9-slim AS builder
+
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt --target=/app/deps
+
+# ---------- Stage 2: Runtime ----------
+FROM gcr.io/distroless/python3-debian12
+
+WORKDIR /app
+COPY --from=builder /app /app
+COPY --from=builder /app/deps /app/deps
+
+ENV PYTHONPATH="/app/deps"
+
+EXPOSE 80
+CMD ["run.py"]
+
+🔹 Image Size Comparison
+Base Image -	Approx Size
+python:3.9 -	~1.01 GB
+python:3.9-slim -	~137 MB
+Distroless (Final) -	~53 MB ✅
+
+✅ Benefits of Multi-Stage Builds
+- Removes unnecessary build tools
+- Smaller image size
+- Faster pull & deployment
+- Reduced security vulnerabilities
+- Production-ready minimal container
+
+
+📌 Task 5: Manage Image with Docker Hub
+🔹 Tag Image
+docker tag python-app-mini:latest mdrashedulislam/python-flask-app:v1.0
+
+🔹 Login to Docker Hub
+docker login
+
+🔹 Push Image
+docker push mdrashedulislam/python-flask-app:v1.0
+
+🔹 Verify by Pulling
+docker pull mdrashedulislam/python-flask-app:v1.0
+
+
+📌 Task 6: Persist Data Using Docker Volumes
+🔹 Run Container with Volume Mapping
+docker run -d \
+-v /home/ubuntu/github_repos/volumes:/app/db \
+python-app
+
+🔹 Verification Steps
+- Created files inside container
+- Files appeared on host
+- Created files on host
+- Files appeared inside container
+
+✔️ Confirms two-way persistence
+
+✅ Why Docker Volumes Matter
+- Data survives container restarts
+- Enables backups & migrations
+- Essential for databases & logs
+- Decouples data from container lifecycle
+
+📌 Task 7: Docker Networking (Two-Tier App)
+🔹 Create Custom Network
+docker network create twotier
+
+🔹 Run MySQL Container
+docker run -d \
+--name mysql \
+--network=twotier \
+-e MYSQL_ROOT_PASSWORD=admin \
+-e MYSQL_USER=admin \
+-e MYSQL_PASSWORD=admin \
+-e MYSQL_DATABASE=ras_db \
+mysql:latest
+
+🔹 Networking Insight
+- Containers communicate using service names
+- No need for IP addresses
+- Secure isolated bridge network
+
+📌 Task 8: Orchestration with Docker Compose
+🔹 docker-compose.yml
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: ras_db
+    volumes:
+      - ./mysql_data_new:/var/lib/mysql
+    networks:
+      - twotier
+    ports:
+      - "3306:3306"
+
+  flaskapp:
+    build: .
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: ras_db
+    depends_on:
+      - mysql
+    networks:
+      - twotier
+    ports:
+      - "5000:5000"
+
+networks:
+  twotier:
+
+volumes:
+  mysql_data_new:
+
+🔹 Commands Used
+docker compose up -d
+docker compose down
+
+✅ Docker Compose Benefits
+- Single command deployment
+- Service dependency management
+- Simplified networking
+
+Production-like setup locally
+
+📌 Task 9: Docker Scout Image Analysis
+🔹 Command Executed
+docker scout quickview mdrashedulislam/python-flask-app:v1.0
+
+🔹 Observations
+- Distroless image had significantly fewer CVEs
+- No shell or package manager vulnerabilities
+- Reduced OS-level attack surface
+
+🔹 Key Takeaway
+
+Smaller images = fewer vulnerabilities
+
+📌 Task 10: Final Reflection
+🔹 Docker’s Impact on Modern Development
+
+* Docker has fundamentally changed how applications are built and deployed. It ensures:
+- Consistent environments
+- Faster CI/CD pipelines
+- Easier scaling and rollback
+- Strong isolation and portability
+
+⚠️ Challenges
+- Learning curve
+- Security misconfigurations if not optimized
+- Image bloat without best practices
+
+✅ Final Thought
+
+Using multi-stage builds, volumes, networks, Docker Compose, and image scanning, I learned how to build production-ready, secure, and optimized containers — not just run applications.
+
+✅ Conclusion
+- This hands-on exercise strengthened my understanding of:
+- Image optimization
+- Container security
+- Stateful containers
+- Multi-container orchestration
+- Real-world DevOps workflows
